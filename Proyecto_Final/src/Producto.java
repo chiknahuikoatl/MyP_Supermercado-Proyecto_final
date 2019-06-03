@@ -1,0 +1,56 @@
+public class Producto{
+
+    private final int id;
+    private final String nombre;
+    private final double precio;
+    private int cantidad;
+
+    /*
+     * Constructor de la clase.
+     * @param id el identificador del producto;
+     * @param nombre del producto.
+     * @param precio del producto.
+     * @param cantidad del producto.
+     */
+    public Producto(int id, String nombre, String precio, String cantidad){
+        this.id = id;
+        this.nombre = nombre;
+        this.precio = precio;
+        this.cantidad = cantidad;
+    }
+
+    /*
+     * Constructor de clase que construye un producto a partir de otro pero
+     * con cantidad distinta.
+     * @param producto prototipo a crear.
+     * @param cantidad nueva a asignar.
+     */
+    public Producto(Producto producto, int cantidad){
+        this.id = producto.getID();
+        this.nombre = producto.getNombre();
+        this.precio = producto.getPrecio();
+        this.cantidad = cantidad;
+    }
+
+    // Getters y setters
+    public int getID(){
+        return this.id;
+    }
+
+    public String getNombre(){
+        return this.nombre;
+    }
+
+    public double getPrecio(){
+        return this.precio;
+    }
+
+    public int getCantidad(){
+        return this.cantidad;
+    }
+
+    public void setCantidad(int cant){
+        this.cantidad = cant;
+    }
+
+}
