@@ -13,10 +13,22 @@ public class Producto{
      * @param cantidad del producto.
      */
     public Producto(int id, String nombre, String precio, String cantidad){
-        this.id = id;
-        this.nombre = nombre;
-        this.precio = precio;
+        this.id       = id;
+        this.nombre   = nombre;
+        this.precio   = precio;
         this.cantidad = cantidad;
+    }
+
+    /*
+     * Constructor de clase que construye un producto con las mismas
+     * características que el producto dado.
+     * @param producto prototipo a crear.
+     */
+    public Producto(Producto producto){
+        this.id       = producto.getID();
+        this.nombre   = producto.getNombre();
+        this.precio   = producto.getPrecio();
+        this.cantidad = producto.getCantidad();
     }
 
     /*
@@ -26,9 +38,9 @@ public class Producto{
      * @param cantidad nueva a asignar.
      */
     public Producto(Producto producto, int cantidad){
-        this.id = producto.getID();
-        this.nombre = producto.getNombre();
-        this.precio = producto.getPrecio();
+        this.id       = producto.getID();
+        this.nombre   = producto.getNombre();
+        this.precio   = producto.getPrecio();
         this.cantidad = cantidad;
     }
 
