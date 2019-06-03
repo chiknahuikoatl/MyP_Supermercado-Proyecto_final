@@ -32,6 +32,12 @@ public class Producto{
         this.cantidad = cantidad;
     }
 
+    public String toString(){
+        String s = String.format("%06d, %s, %.2f, %d",
+                         id, nombre, precio, cantidad);
+        return s;
+    }
+
     // Getters y setters
     public int getID(){
         return this.id;
