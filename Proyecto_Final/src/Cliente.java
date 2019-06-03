@@ -8,6 +8,8 @@ public class Cliente{
         this.miSuper = super();
     }
 
+
+
     /*
      * Este método se encarga de meter a la lista del carrito la cantidad de
      * elementos dados del producto indicado.
