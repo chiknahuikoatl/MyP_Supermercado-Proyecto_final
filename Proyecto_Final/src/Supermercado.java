@@ -7,6 +7,12 @@ public class Supermercado{
 
     public Supermercado(){}
 
+    public int enExistencia(int producto){
+        try{
+            int cantidad = almacen[producto].getCantidad();
+        }
+    }
+
     // Getters y setters
     public Producto[] getAlmacen(){
         return almacen;
