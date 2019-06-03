@@ -7,10 +7,41 @@ public class Supermercado{
 
     public Supermercado(){}
 
+    /*
+     * Método que devuelve la cantidad de elementos de un producto que hay
+     * disponibles en el almacén.
+     * @param producto, el id del producto a buscar.
+     * @return cantidad disponible del producto dado.
+     */
     public int enExistencia(int producto){
         try{
-            int cantidad = almacen[producto].getCantidad();
+            return almacen[producto].getCantidad();
+        }catch(IndexOutOfBoundsException e){
+            sop("Producto inexistente.");
+            return -1;
         }
+    }
+
+    /*
+     * Quita del almacén el número dado de elementos dados del producto dado.
+     * Si la cantidad dada es mayor al número de elementos en existencia,
+     * entonces el almacén se deja en cero.
+     * @param producto id del producto a retirar del almacén.
+     * @param cantidadProducto el número de elementos a retirar del almacén.
+     * @return prod, el producto con la cantidad actualizada.
+     * @throws YaSeAcaboJovenException si ya no hay elementos de un producto.
+     */
+    public Producto retiraAlmacen(int producto, int cantidadProducto) throws
+            YaSeAcaboJovenException{
+        Producto prod = almacen[producto];
+        if(prod.getCantidad() == 0){
+            throw new YaSeAcaboJovenException();
+        }else if(prod.getCantidad() < cantidadProducto){
+            prod.setCantidad(0);
+        }else{
+            prod.setCantidad(prod.getCantidad()-cantidadProducto);
+        }
+        return new Producto(prod);
     }
 
     // Getters y setters
@@ -20,5 +51,9 @@ public class Supermercado{
 
     public Caja[] getCajas(){
         return cajas;
+    }
+
+    public static void sop(String s){
+        System.out.println(s);
     }
 }
