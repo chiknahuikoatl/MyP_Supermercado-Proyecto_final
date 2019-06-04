@@ -1,6 +1,14 @@
 import java.util.Scanner;
 
 public class Simulador {
+
+    private static boolean programaTerminado = false;
+
+
+    public static boolean getBandera() {
+        return programaTerminado;
+    }
+
     public void muestraMenu() {
         System.out.println("Bienvenido, seleccione una opcion por favor");
         System.out.println("1) Labor administrativa");
@@ -9,7 +17,7 @@ public class Simulador {
     }
 
     public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
+        /* Scanner sc = new Scanner(System.in);
         Simulador s = new Simulador();
         s.muestraMenu();
         int opcion;
@@ -28,5 +36,9 @@ public class Simulador {
             default:
                 break;
         }
+
+         */
+
+        
     }
 }
