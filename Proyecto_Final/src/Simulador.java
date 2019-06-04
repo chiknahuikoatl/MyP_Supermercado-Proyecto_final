@@ -69,8 +69,8 @@ public class Simulador {
         }
 
          */
-
-        
+        Simulador s = new Simulador();
+        s.opcionDos();
     }
 
     public void imprimeMenuUno(){

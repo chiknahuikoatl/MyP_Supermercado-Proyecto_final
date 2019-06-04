@@ -53,6 +53,9 @@ public class Caja extends Thread {
     }
     
     private void cobra() {
+        if (cliente > fila.size() || !fila.isEmpty() || fila.size() == 0) {
+            return;   
+        }
         Cliente c = fila.get(cliente);
         double tiempoDeEspera = c.getCarrito().size() * 0.002; // Tiempo que tardará en realizar la compra
         try {
