@@ -15,12 +15,13 @@ public class Caja extends Thread {
     private int maximo; // Contador correspondiente al máximo número de clientes en la caja.
     private int paraCancelacion;
     private Random rd;
+    private Supermercado compartido;
 
     public Caja() {
-        rd = new Random();
-        paraCancelacion =  rd.nextInt(100);
+        rd                = new Random();
+        paraCancelacion   =  rd.nextInt(100);
         this.totalCompras = 0;
-        this.maximo = 0;
+        this.maximo       = 0;
     }
 
     // Getters y setters
@@ -71,8 +72,8 @@ public class Caja extends Thread {
             subTotal += total;
             ticket += generaTicket(p.getID(), p.getCantidad(), p.getNombre(), p.getPrecio(), total);
             if (cancela == this.paraCancelacion) {
-                //ticket += llamda al gerente
-                //subTotal -= total;
+                ticket += compartido.cancela(p.getID(), p.getCantidad(), p.getNombre(), p.getPrecio(), total);
+                subTotal -= total;
             }
         }
         double iva = subTotal * 0.08;
