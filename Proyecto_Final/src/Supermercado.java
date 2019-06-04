@@ -13,7 +13,7 @@ public class Supermercado{
     }
 
     /**
-     * Método que devuelve la cantidad de elementos de un producto que hay
+     * Método que devuelve la cantidad de artículos de un producto que hay
      * disponibles en el almacén.
      * @param producto, el id del producto a buscar.
      * @return cantidad disponible del producto dado.
@@ -28,13 +28,13 @@ public class Supermercado{
     }
 
     /**
-     * Quita del almacén el número dado de elementos dados del producto dado.
-     * Si la cantidad dada es mayor al número de elementos en existencia,
+     * Quita del almacén el número dado de artículos dados del producto dado.
+     * Si la cantidad dada es mayor al número de artículos en existencia,
      * entonces el almacén se deja en cero.
      * @param producto id del producto a retirar del almacén.
-     * @param cantidadProducto el número de elementos a retirar del almacén.
-     * @return prod, el producto con la cantidad actualizada.
-     * @throws YaSeAcaboJovenException si ya no hay elementos de un producto.
+     * @param cantidadProducto el número de artículos a retirar del almacén.
+     * @return prod el producto con la cantidad actualizada.
+     * @throws YaSeAcaboJovenException si ya no hay artículos de un producto.
      */
     public synchronized Producto retiraAlmacen(int producto, int cantidadProducto)
             throws YaSeAcaboJovenException{
