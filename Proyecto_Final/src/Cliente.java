@@ -1,5 +1,5 @@
 import java.util.LinkedList;
-import java.util.random;
+import java.util.Random;
 
 public class Cliente{
     private static Supermercado miSuper;
@@ -8,8 +8,8 @@ public class Cliente{
     private double probaMasDeVeinte; //La proba de tener más de veinte artículos
     private Random random;
 
-    public Cliente(Supermercado super, double probaMasDeVeinte){
-        this.miSuper = super();
+    public Cliente(Supermercado miSuper, double probaMasDeVeinte){
+        this.miSuper = miSuper;
         this.probaMasDeVeinte = probaMasDeVeinte;
         random = new Random();
     }
@@ -41,7 +41,7 @@ public class Cliente{
         while(productosAComprar != 0){
             int cantProd = random.nextInt(productosAComprar) + 1;
             int prod = random.nextInt(miSuper.getAlmacen().length);
-            ctosAComprar -= meteAlCarrito(prod, cantProd);
+            productosAComprar -= meteAlCarrito(prod, cantProd);
         }
         return this.carrito;
     }
@@ -55,7 +55,7 @@ public class Cliente{
      * @param cant, la cantidad de artículos del producto dado a sustraer.
      * @return el número de artículos introducidos.
      */
-    public boolean meteAlCarrito(int prod, int cant){
+    public int meteAlCarrito(int prod, int cant){
         int cantProd = miSuper.enExistencia(prod);
         try{
             Producto p = new Producto(miSuper.retiraAlmacen(prod, cantProd),
@@ -63,13 +63,13 @@ public class Cliente{
             carrito.add(p);
             return p.getCantidad();
         }catch(YaSeAcaboJovenException e){
-            sop("" + e);
+            Simulador.sop("" + e);
             return 0;
         }
     }
 
     // Getters y setters
-    public Producto[] getCarrito(){
+    public LinkedList<Producto> getCarrito(){
         return this.carrito;
     }
 
