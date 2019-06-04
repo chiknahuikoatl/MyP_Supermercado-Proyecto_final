@@ -14,6 +14,7 @@ public class Caja extends Thread {
     private int totalCompras; // Contador de compras realizadas en el día
     private int maximo; // Contador correspondiente al máximo número de clientes en la caja.
     private int paraCancelacion;
+    private int cliente = 0;
     private Random rd;
     private Supermercado compartido;
 
@@ -61,14 +62,17 @@ public class Caja extends Thread {
      */
     public void forma(Cliente c) {
         fila.add(c);
-        int id = c.hashCode(); // Id único del ticket.
+    }
+    
+    private void cobra() {
+        Cliente c = fila.get(cliente);
         double tiempoDeEspera = c.getCarrito().length * 0.002; // Tiempo que tardará en realizar la compra
         try {
             TimeUnit.SECONDS.sleep((int)tiempoDeEspera);
         } catch (InterruptedException e) {
             System.out.println("Error al intentar pausar la ejecucion de cobro");
         }
-
+        int id = c.hashCode(); // Id único del ticket.
         int cancela = rd.nextInt(100);
         // Realización del ticket
         double subTotal = 0;
@@ -90,10 +94,11 @@ public class Caja extends Thread {
         ticket += "¡GRACIAS POR SU COMPRA, VUELVE PRONTO!";
         ticket += "----------------------------------------------";
         tickets.add(ticket);
-
+    
         this.totalCompras++;
+        this.cliente++;
     }
-
+    
     /**
      * Método auxiliar para la generación del ticket que concatena los datos de id
      * del producto, la cantidad comprada, el nombre del producto, el precio
@@ -134,6 +139,9 @@ public class Caja extends Thread {
 
     @Override
     public void run() {
-
+        while (!Simulador.getBandera()) {
+            cobra();
+        }
+        cierreDeCaja();
     }
 }
