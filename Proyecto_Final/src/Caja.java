@@ -31,18 +31,6 @@ public class Caja extends Thread {
         this.maximo = 0;
     }
 
-    // Getters y setters
-    public LinkedList<Cliente> getFila() {
-        if (maximo < this.fila.size()) {
-            maximo = fila.size();
-        }
-        return this.fila;
-    }
-
-    public int getMaximo() {
-        return maximo;
-    }
-
     /**
      * Método encargado de regresar el número de clientes formados.
      *
@@ -111,11 +99,8 @@ public class Caja extends Thread {
     }
 
     public void cierreDeCaja() {
-        int hora = rd.nextInt(12) + 1;
-        int minutos = rd.nextInt(59) + 1;
-        int segundos = rd.nextInt(59) + 1;
-        // Falta agregar la fecha jeje
-        String nombre = String.format("Ventas Fecha,%d:%d:%d.txt", hora, minutos, segundos);
+        Fecha fecha = Supermercado.getFecha();
+        String nombre = String.format("Ventas de ", fecha.toString());
         File file = new File(nombre);
         FileOutputStream fos;
         try {
@@ -134,5 +119,17 @@ public class Caja extends Thread {
     @Override
     public void run() {
 
+    }
+
+    // Getters y setters
+    public LinkedList<Cliente> getFila() {
+        if (maximo < this.fila.size()) {
+            maximo = fila.size();
+        }
+        return this.fila;
+    }
+
+    public int getMaximo() {
+        return maximo;
     }
 }

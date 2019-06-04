@@ -6,12 +6,14 @@ public class Supermercado{
     private static Producto[] almacen;
     private static Caja[] cajas;
     private Gerente gerente;
+    private Fecha fecha;
     private int numCajasRapidas;
 
     private static LinkedList<Cliente> unifila;
 
     public Supermercado(int numCajasRapidas){
         this.numCajasRapidas = numCajasRapidas;
+        this.fecha = new Fecha();
         cajas = new Caja[15];
     }
 
@@ -73,7 +75,7 @@ public class Supermercado{
      */
     public void formaEnCaja(Cliente cliente){
         if(cliente.getNumeroArticulos() <= 20){
-            cajas[14].forma(cliente);
+            unfila.add(cliente);
         }else{
             Caja caja = cajaMasVacia();
             caja.forma(cliente);
@@ -111,19 +113,6 @@ public class Supermercado{
         return gerente.cancela(id, cantidad, nombre, precio, total);
     }
 
-    // Getters y setters
-    public Producto[] getAlmacen(){
-        return almacen;
-    }
-
-    public Caja[] getCajas(){
-        return cajas;
-    }
-
-    public static void sop(String s){
-        System.out.println(s);
-    }
-
     private class Gerente {
         public Gerente() {
 
@@ -133,4 +122,22 @@ public class Supermercado{
             return String.format("Cancelacion\n%d\t%d\t%s\t%f\t%f", id, cantidad, nombre, precio, total);
         }
     }
+
+    // Getters y setters
+    public Producto[] getAlmacen(){
+        return almacen;
+    }
+
+    public Caja[] getCajas(){
+        return cajas;
+    }
+
+    public static Fecha getFecha(){
+        return fecha;
+    }
+
+    public static void sop(String s){
+        System.out.println(s);
+    }
+
 }
