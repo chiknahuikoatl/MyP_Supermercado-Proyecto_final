@@ -8,8 +8,23 @@ public class Supermercado{
     private Gerente gerente;
     private int numCajasRapidas;
 
+    private static LinkedList<Cliente> unifila;
+
     public Supermercado(int numCajasRapidas){
         this.numCajasRapidas = numCajasRapidas;
+        cajas = new Caja[15];
+    }
+
+    /**
+     * Método fábrica para crear cajas.
+     */
+    public void creaCajas(){
+        for(int i = 0; i < 15 - numCajasRapidas; i++){
+            cajas[i] = new Caja(new LinkedList<Cliente>);
+        }
+        for(int i = 15 - numCajasRapidas; i < 15; i++){
+            cajas[i] = new Caja(unifila);
+        }
     }
 
     /**
