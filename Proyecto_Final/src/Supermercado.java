@@ -8,13 +8,15 @@ public class Supermercado{
     private static Producto[] almacen;
     private static Caja[] cajas;
     private Gerente gerente;
+    private static Fecha fecha;
     private int numCajasRapidas;
     private Random rd = new Random();
 
     private static LinkedList<Cliente> unifila;
 
-    public Supermercado(int numCajasRapidas){
+    public Supermercado(int numCajasRapidas, double probaMasDeVeinte, Fecha fecha){
         this.numCajasRapidas = numCajasRapidas;
+        this.fecha = fecha;
         cajas = new Caja[15];
     }
 
@@ -40,7 +42,7 @@ public class Supermercado{
         try{
             return almacen[producto].getCantidad();
         }catch(IndexOutOfBoundsException e){
-            sop("Producto inexistente.");
+            Simulador.sop("Producto inexistente.");
             return -1;
         }
     }
@@ -58,7 +60,7 @@ public class Supermercado{
             throws YaSeAcaboJovenException{
         Producto prod = almacen[producto];
         if(prod.getCantidad() == 0){
-            throw new YaSeAcaboJovenException();
+            throw new YaSeAcaboJovenException(prod);
         }else if(prod.getCantidad() < cantidadProducto){
             prod.setCantidad(0);
         }else{
@@ -76,7 +78,7 @@ public class Supermercado{
      */
     public void formaEnCaja(Cliente cliente){
         if(cliente.getNumeroArticulos() <= 20){
-            cajas[14].forma(cliente);
+            unifila.add(cliente);
         }else{
             Caja caja = cajaMasVacia();
             caja.forma(cliente);
@@ -121,10 +123,6 @@ public class Supermercado{
 
     public Caja[] getCajas(){
         return cajas;
-    }
-
-    public static void sop(String s){
-        System.out.println(s);
     }
 
     private class Gerente {

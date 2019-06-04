@@ -12,7 +12,7 @@ public class Producto{
      * @param precio del producto.
      * @param cantidad del producto.
      */
-    public Producto(int id, String nombre, String precio, String cantidad){
+    public Producto(int id, String nombre, double precio, int cantidad){
         this.id       = id;
         this.nombre   = nombre;
         this.precio   = precio;

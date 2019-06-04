@@ -6,7 +6,7 @@ public class YaSeAcaboJovenException extends Exception{
      *
      * @param o
      */
-    public NoHayLugarException(Object o){
+    public YaSeAcaboJovenException(Object o){
         super(MENSAJE+o.getClass().getName());
     }
 }
