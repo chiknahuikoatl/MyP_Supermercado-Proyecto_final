@@ -1,4 +1,6 @@
 import java.lang.Thread;
+import java.util.LinkedList;
+import java.util.Random;
 import java.lang.InterruptedException;
 
 public class Supermercado{
@@ -7,6 +9,7 @@ public class Supermercado{
     private static Caja[] cajas;
     private Gerente gerente;
     private int numCajasRapidas;
+    private Random rd = new Random();
 
     private static LinkedList<Cliente> unifila;
 
@@ -20,7 +23,7 @@ public class Supermercado{
      */
     public void creaCajas(){
         for(int i = 0; i < 15 - numCajasRapidas; i++){
-            cajas[i] = new Caja(new LinkedList<Cliente>);
+            cajas[i] = new Caja(new LinkedList<Cliente>());
         }
         for(int i = 15 - numCajasRapidas; i < 15; i++){
             cajas[i] = new Caja(unifila);
@@ -131,6 +134,27 @@ public class Supermercado{
 
         public String cancela(int id, int cantidad, String nombre, double precio, double total) {
             return String.format("Cancelacion\n%d\t%d\t%s\t%f\t%f", id, cantidad, nombre, precio, total);
+        }
+    }
+
+    public void ejecuta(int tiempo) {
+        creaCajas();
+        while (!Simulador.getBandera()) {
+            int numeroPersonas = rd.nextInt(300)+1;
+            for (int i = 0; i < numeroPersonas; i++) {
+                double proba = rd.nextDouble();
+                Cliente c = new Cliente(this, proba);
+                formaEnCaja(c);
+                if (i == 30) {
+                    despierta();
+                }
+            }            
+        }
+    }
+
+    public void despierta() {
+        for (int i = 0; i < cajas.length; i++) {
+            cajas[i].start();
         }
     }
 }
