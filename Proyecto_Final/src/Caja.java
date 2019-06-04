@@ -6,15 +6,19 @@ import java.util.LinkedList;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
-public class Caja {
+public class Caja extends Thread {
     private LinkedList<Cliente> fila; // Linked list que será usada cómo cola
     // Lista encargada de almacenar los ticket generados por cada compra para el
     // proceso de persitencia.
     private LinkedList<String> tickets;
     private int totalCompras; // Contador de compras realizadas en el día
     private int maximo; // Contador correspondiente al máximo número de clientes en la caja.
+    private int paraCancelacion;
+    private Random rd;
 
     public Caja() {
+        rd = new Random();
+        paraCancelacion =  rd.nextInt(100);
         this.totalCompras = 0;
         this.maximo = 0;
     }
@@ -47,14 +51,16 @@ public class Caja {
      * @param c Cliente al cual se le realizará la compra.
      */
     public void forma(Cliente c) {
+        fila.add(c);
         int id = c.hashCode(); // Id único del ticket.
         double tiempoDeEspera = c.getCarrito().length * 0.002; // Tiempo que tardará en realizar la compra
         try {
             TimeUnit.SECONDS.sleep((int)tiempoDeEspera);
         } catch (InterruptedException e) {
-            // TODO Auto-generated catch block
             System.out.println("Error al intentar pausar la ejecucion de cobro");
         }
+
+        int cancela = rd.nextInt(100);
         // Realización del ticket
         double subTotal = 0;
         String ticket = "TICKET DE COMPRA " + id;
@@ -64,6 +70,10 @@ public class Caja {
             double total = p.getCantidad() * p.getPrecio();
             subTotal += total;
             ticket += generaTicket(p.getID(), p.getCantidad(), p.getNombre(), p.getPrecio(), total);
+            if (cancela == this.paraCancelacion) {
+                //ticket += llamda al gerente
+                //subTotal -= total;
+            }
         }
         double iva = subTotal * 0.08;
         ticket += String.format("Subtotal:%f\nIVA:%f\nTotal:%f", subTotal, iva, (iva + subTotal));
@@ -93,7 +103,6 @@ public class Caja {
     }
 
     public void cierreDeCaja() {
-        Random rd = new Random();
         int hora = rd.nextInt(12) + 1;
         int minutos = rd.nextInt(59) + 1;
         int segundos = rd.nextInt(59) + 1;
@@ -107,12 +116,15 @@ public class Caja {
             for (String s : this.tickets) {
                 writer.println(s);
             }
+            writer.println("total de compras:" + this.totalCompras);
             writer.close();
         } catch (FileNotFoundException e) {
             System.out.println("error al intentar crear el archivo: " + nombre);
         }
-        for (String s : tickets) {
+    }
 
-        }
+    @Override
+    public void run() {
+        
     }
 }
