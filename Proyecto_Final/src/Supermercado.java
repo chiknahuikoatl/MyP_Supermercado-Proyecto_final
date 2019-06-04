@@ -31,8 +31,8 @@ public class Supermercado{
      * @return prod, el producto con la cantidad actualizada.
      * @throws YaSeAcaboJovenException si ya no hay elementos de un producto.
      */
-    public Producto retiraAlmacen(int producto, int cantidadProducto) throws
-            YaSeAcaboJovenException{
+    public synchronized Producto retiraAlmacen(int producto, int cantidadProducto)
+            throws YaSeAcaboJovenException{
         Producto prod = almacen[producto];
         if(prod.getCantidad() == 0){
             throw new YaSeAcaboJovenException();
