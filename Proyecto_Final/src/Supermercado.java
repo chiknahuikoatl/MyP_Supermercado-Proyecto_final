@@ -134,7 +134,7 @@ public class Supermercado{
 
         public String cancela(int id, int cantidad, String nombre, double precio, double total) {
             return String.format("Cancelacion\n%d\t%d\t%s\t%f\t%f", id, cantidad, nombre, precio, total);
-        }
+        }   
     }
 
     public void ejecuta(int tiempo) {
