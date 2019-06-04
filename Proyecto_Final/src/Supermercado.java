@@ -3,24 +3,32 @@ import java.lang.InterruptedException;
 
 public class Supermercado{
 
-    private class Gerente {
-        public Gerente() {
-
-        }
-
-        public String cancela(int id, int cantidad, String nombre, double precio, double total) {
-            return String.format("Cancelacion\n%d\t%d\t%s\t%f\t%f", id, cantidad, nombre, precio, total);
-        }
-    }
-
     private static Producto[] almacen;
     private static Caja[] cajas;
     private Gerente gerente;
+    private int numCajasRapidas;
 
-    public Supermercado(){}
+    private static LinkedList<Cliente> unifila;
 
-    /*
-     * Método que devuelve la cantidad de elementos de un producto que hay
+    public Supermercado(int numCajasRapidas){
+        this.numCajasRapidas = numCajasRapidas;
+        cajas = new Caja[15];
+    }
+
+    /**
+     * Método fábrica para crear cajas.
+     */
+    public void creaCajas(){
+        for(int i = 0; i < 15 - numCajasRapidas; i++){
+            cajas[i] = new Caja(new LinkedList<Cliente>);
+        }
+        for(int i = 15 - numCajasRapidas; i < 15; i++){
+            cajas[i] = new Caja(unifila);
+        }
+    }
+
+    /**
+     * Método que devuelve la cantidad de artículos de un producto que hay
      * disponibles en el almacén.
      * @param producto, el id del producto a buscar.
      * @return cantidad disponible del producto dado.
@@ -34,14 +42,14 @@ public class Supermercado{
         }
     }
 
-    /*
-     * Quita del almacén el número dado de elementos dados del producto dado.
-     * Si la cantidad dada es mayor al número de elementos en existencia,
+    /**
+     * Quita del almacén el número dado de artículos dados del producto dado.
+     * Si la cantidad dada es mayor al número de artículos en existencia,
      * entonces el almacén se deja en cero.
      * @param producto id del producto a retirar del almacén.
-     * @param cantidadProducto el número de elementos a retirar del almacén.
-     * @return prod, el producto con la cantidad actualizada.
-     * @throws YaSeAcaboJovenException si ya no hay elementos de un producto.
+     * @param cantidadProducto el número de artículos a retirar del almacén.
+     * @return prod el producto con la cantidad actualizada.
+     * @throws YaSeAcaboJovenException si ya no hay artículos de un producto.
      */
     public synchronized Producto retiraAlmacen(int producto, int cantidadProducto)
             throws YaSeAcaboJovenException{
@@ -54,6 +62,40 @@ public class Supermercado{
             prod.setCantidad(prod.getCantidad()-cantidadProducto);
         }
         return new Producto(prod);
+    }
+
+    /**
+     * Forma al cliente en la caja más vacía.
+     * Si el cliente tiene 20 artículos o menos, s.p.g. lo forma en la última
+     * caja.
+     * Si no, lo forma en la caja no rápida con la fila más corta.
+     * @param cliente a formar.
+     */
+    public void formaEnCaja(Cliente cliente){
+        if(cliente.getNumeroArticulos() <= 20){
+            cajas[14].forma(cliente);
+        }else{
+            Caja caja = cajaMasVacia();
+            caja.forma(cliente);
+        }
+    }
+
+    /**
+     * Devuelve la caja más vacía.
+     * Busca en todas las cajas la que tenga la fila más corta.
+     * Si la longitoud de la fila de una caja es cero, la devuelve. De otro
+     * modo, sigue buscando.
+     * @return caja con la fila más corta.
+     */
+    public synchronized Caja cajaMasVacia(){
+        int indice = 0;
+        for(int i = 0; i < 14 - numCajasRapidas; i++){
+            if(cajas[i].getLongitud() == 0) return cajas[i];
+            if(cajas[indice].getLongitud() > cajas[i].getLongitud()){
+                indice = i;
+            }
+        }
+        return cajas[indice];
     }
 
     /**
@@ -80,5 +122,15 @@ public class Supermercado{
 
     public static void sop(String s){
         System.out.println(s);
+    }
+
+    private class Gerente {
+        public Gerente() {
+
+        }
+
+        public String cancela(int id, int cantidad, String nombre, double precio, double total) {
+            return String.format("Cancelacion\n%d\t%d\t%s\t%f\t%f", id, cantidad, nombre, precio, total);
+        }
     }
 }
