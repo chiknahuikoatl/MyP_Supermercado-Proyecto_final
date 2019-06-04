@@ -8,6 +8,12 @@ public class Cliente{
     private double probaMasDeVeinte; //La proba de tener más de veinte artículos
     private Random random;
 
+    public Cliente(Supermercado super){
+        this.miSuper = super();
+        this.probaMasDeVeinte = 0.5;
+        random = new Random();
+    }
+
     public Cliente(Supermercado super, double probaMasDeVeinte){
         this.miSuper = super();
         this.probaMasDeVeinte = probaMasDeVeinte;
