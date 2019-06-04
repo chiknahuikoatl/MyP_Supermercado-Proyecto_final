@@ -4,6 +4,7 @@ import java.util.random;
 public class Cliente{
     private static Supermercado miSuper;
     private LinkedList<Producto> carrito;
+    private int numeroArticulos;
     private Random random;
 
     public Cliente(Supermercado super){
@@ -11,9 +12,17 @@ public class Cliente{
         random = new Random();
     }
 
-    
+    /**
+     * Simula la interacción del cliente en un supermercado.
+     * Llena el carrito con llenaCarrito() y busca y se forma en la fila más
+     * vacía.
+    */
+    public void compra(){
+        llenaCarrito();
+        miSuper.formaEnCaja(this);
+    }
 
-    /*
+    /**
      * Llena el carrito de un número aleatorio de productos.
      * La probabilidad de llevar menos de 20 productos es de 50%, la misma que
      * llevar entre 21 y 200.
@@ -26,6 +35,7 @@ public class Cliente{
         }else{
             productosAComprar = random.nextInt(181) + 20;
         }
+        numeroArticulos = productosAComprar;
         while(productosAComprar != 0){
             int cantProd = random.nextInt(productosAComprar) + 1;
             int prod = random.nextInt(miSuper.getAlmacen().length);
@@ -34,7 +44,7 @@ public class Cliente{
         return this.carrito;
     }
 
-    /*
+    /**
      * Este método se encarga de meter a la lista del carrito la cantidad de
      * elementos dados del producto indicado.
      * Si la cantidad dada es mayor a la cantidad de elementos de un producto
@@ -59,5 +69,9 @@ public class Cliente{
     // Getters y setters
     public Producto[] getCarrito(){
         return this.carrito;
+    }
+
+    public int getNumeroArticulos(){
+        return this.numeroArticulos;
     }
 }
