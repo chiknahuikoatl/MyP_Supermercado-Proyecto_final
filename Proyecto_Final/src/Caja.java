@@ -23,6 +23,14 @@ public class Caja extends Thread {
         this.maximo = 0;
     }
 
+    public Caja(LinkedList<Cliente> fila) {
+        this.fila = fila;
+        rd = new Random();
+        paraCancelacion =  rd.nextInt(100);
+        this.totalCompras = 0;
+        this.maximo = 0;
+    }
+
     // Getters y setters
     public LinkedList<Cliente> getFila() {
         if (maximo < this.fila.size()) {
@@ -37,7 +45,7 @@ public class Caja extends Thread {
 
     /**
      * Método encargado de regresar el número de clientes formados.
-     * 
+     *
      * @return Numero de clientes formados.
      */
     public int getLongitud() {
@@ -47,7 +55,7 @@ public class Caja extends Thread {
     /**
      * Método principal encargado de realizar el cobro por cliente y genera el
      * ticket de compra;
-     * 
+     *
      * @param c Cliente al cual se le realizará la compra.
      */
     public void forma(Cliente c) {
@@ -89,7 +97,7 @@ public class Caja extends Thread {
      * Método auxiliar para la generación del ticket que concatena los datos de id
      * del producto, la cantidad comprada, el nombre del producto, el precio
      * unitario del producto y el total por la compra del número del producto.
-     * 
+     *
      * @param id
      * @param cantidad
      * @param nombre
@@ -125,6 +133,6 @@ public class Caja extends Thread {
 
     @Override
     public void run() {
-        
+
     }
 }
