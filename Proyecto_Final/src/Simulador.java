@@ -46,6 +46,17 @@ public class Simulador {
                 s.imprimeMenuUno();
             }
         }
+        swtich(op){
+            case 1:
+                sop("Uno");
+                break;
+            case 2:
+                sop("Dos");
+                break;
+            default:
+                sop("Omisión");
+                break;
+        }
     }
 
     public void imprimeMenuUno(){
@@ -57,7 +68,10 @@ public class Simulador {
     }
 
     public void opcionDos(){
-        sop("Opción dos por implementar.");
+        sop("Simulación por con datos por omisión.");
+        sop("Cajas rápidas: "+6+"Probabilidad de llevar más de 20 artículos: "+0.5);
+        Supermercado super = new Supermercado(6, 0.5);
+        super.ejecuta();
     }
 
     public static void sop(String s){
