@@ -11,7 +11,7 @@ public class Supermercado{
 
     private static LinkedList<Cliente> unifila;
 
-    public Supermercado(int numCajasRapidas){
+    public Supermercado(int numCajasRapidas, double probaMasDeVeinte){
         this.numCajasRapidas = numCajasRapidas;
         this.fecha = new Fecha();
         cajas = new Caja[15];
@@ -39,7 +39,7 @@ public class Supermercado{
         try{
             return almacen[producto].getCantidad();
         }catch(IndexOutOfBoundsException e){
-            sop("Producto inexistente.");
+            Simulador.sop("Producto inexistente.");
             return -1;
         }
     }
@@ -134,10 +134,6 @@ public class Supermercado{
 
     public static Fecha getFecha(){
         return fecha;
-    }
-
-    public static void sop(String s){
-        System.out.println(s);
     }
 
 }
