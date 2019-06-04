@@ -3,23 +3,16 @@ import java.lang.InterruptedException;
 
 public class Supermercado{
 
-    private class Gerente {
-        public Gerente() {
-
-        }
-
-        public String cancela(int id, int cantidad, String nombre, double precio, double total) {
-            return String.format("Cancelacion\n%d\t%d\t%s\t%f\t%f", id, cantidad, nombre, precio, total);
-        }
-    }
-
     private static Producto[] almacen;
     private static Caja[] cajas;
     private Gerente gerente;
+    private int numCajasRapidas;
 
-    public Supermercado(){}
+    public Supermercado(int numCajasRapidas){
+        this.numCajasRapidas = numCajasRapidas;
+    }
 
-    /*
+    /**
      * Método que devuelve la cantidad de elementos de un producto que hay
      * disponibles en el almacén.
      * @param producto, el id del producto a buscar.
@@ -34,7 +27,7 @@ public class Supermercado{
         }
     }
 
-    /*
+    /**
      * Quita del almacén el número dado de elementos dados del producto dado.
      * Si la cantidad dada es mayor al número de elementos en existencia,
      * entonces el almacén se deja en cero.
@@ -54,6 +47,40 @@ public class Supermercado{
             prod.setCantidad(prod.getCantidad()-cantidadProducto);
         }
         return new Producto(prod);
+    }
+
+    /**
+     * Forma al cliente en la caja más vacía.
+     * Si el cliente tiene 20 artículos o menos, s.p.g. lo forma en la última
+     * caja.
+     * Si no, lo forma en la caja no rápida con la fila más corta.
+     * @param cliente a formar.
+     */
+    public void formaEnCaja(Cliente cliente){
+        if(cliente.getNumeroArticulos() <= 20){
+            cajas[14].forma(cliente);
+        }else{
+            Caja caja = cajaMasVacia();
+            caja.forma(cliente);
+        }
+    }
+
+    /**
+     * Devuelve la caja más vacía.
+     * Busca en todas las cajas la que tenga la fila más corta.
+     * Si la longitoud de la fila de una caja es cero, la devuelve. De otro
+     * modo, sigue buscando.
+     * @return caja con la fila más corta.
+     */
+    public synchronized Caja cajaMasVacia(){
+        int indice = 0;
+        for(int i = 0; i < 14 - numCajasRapidas; i++){
+            if(cajas[i].getLongitud() == 0) return cajas[i];
+            if(cajas[indice].getLongitud() > cajas[i].getLongitud()){
+                indice = i;
+            }
+        }
+        return cajas[indice];
     }
 
     /**
@@ -80,5 +107,15 @@ public class Supermercado{
 
     public static void sop(String s){
         System.out.println(s);
+    }
+
+    private class Gerente {
+        public Gerente() {
+
+        }
+
+        public String cancela(int id, int cantidad, String nombre, double precio, double total) {
+            return String.format("Cancelacion\n%d\t%d\t%s\t%f\t%f", id, cantidad, nombre, precio, total);
+        }
     }
 }
