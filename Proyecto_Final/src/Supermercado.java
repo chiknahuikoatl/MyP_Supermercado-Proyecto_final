@@ -2,8 +2,20 @@ import java.lang.Thread;
 import java.lang.InterruptedException;
 
 public class Supermercado{
+
+    private class Gerente {
+        public Gerente() {
+
+        }
+
+        public String cancela(int id, int cantidad, String nombre, double precio, double total) {
+            return String.format("Cancelacion\n%d\t%d\t%s\t%f\t%f", id, cantidad, nombre, precio, total);
+        }
+    }
+
     private static Producto[] almacen;
     private static Caja[] cajas;
+    private Gerente gerente;
 
     public Supermercado(){}
 
@@ -42,6 +54,19 @@ public class Supermercado{
             prod.setCantidad(prod.getCantidad()-cantidadProducto);
         }
         return new Producto(prod);
+    }
+
+    /**
+     * Método encargado de la cancelacion de un producto
+     * @param id
+     * @param cantidad
+     * @param nombre
+     * @param precio
+     * @param total
+     * @return
+     */
+    public synchronized String cancela(int id, int cantidad, String nombre, double precio, double total) {
+        return gerente.cancela(id, cantidad, nombre, precio, total);
     }
 
     // Getters y setters
