@@ -71,7 +71,7 @@ public class Simulador {
         sop("Simulación por con datos por omisión.");
         sop("Cajas rápidas: "+6+"Probabilidad de llevar más de 20 artículos: "+0.5);
         Supermercado super = new Supermercado(6, 0.5);
-        super.ejecuta();
+        super.ejecuta(1000);
     }
 
     public static void sop(String s){
