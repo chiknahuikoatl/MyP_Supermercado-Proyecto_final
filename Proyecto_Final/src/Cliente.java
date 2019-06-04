@@ -5,10 +5,12 @@ public class Cliente{
     private static Supermercado miSuper;
     private LinkedList<Producto> carrito;
     private int numeroArticulos;
+    private double probaMasDeVeinte; //La proba de tener más de veinte artículos
     private Random random;
 
-    public Cliente(Supermercado super){
+    public Cliente(Supermercado super, double probaMasDeVeinte){
         this.miSuper = super();
+        this.probaMasDeVeinte = probaMasDeVeinte;
         random = new Random();
     }
 
@@ -24,13 +26,13 @@ public class Cliente{
 
     /**
      * Llena el carrito de un número aleatorio de productos.
-     * La probabilidad de llevar menos de 20 productos es de 50%, la misma que
-     * llevar entre 21 y 200.
+     * La probabilidad de llevar entre 21 y 200 artículos se toma de la variable
+     * probaMasDeVeinte instanciada en el constructor.
      * @return el carrito con los productos comprados.
     */
     public LinkedList<Producto> llenaCarrito(){
         int productosAComprar;
-        if(random.nextBoolean()){
+        if(random.nextDouble() < probaMasDeVeinte){
             productosAComprar = random.nextInt(21);
         }else{
             productosAComprar = random.nextInt(181) + 20;
@@ -46,12 +48,12 @@ public class Cliente{
 
     /**
      * Este método se encarga de meter a la lista del carrito la cantidad de
-     * elementos dados del producto indicado.
-     * Si la cantidad dada es mayor a la cantidad de elementos de un producto
+     * artículos dados del producto indicado.
+     * Si la cantidad dada es mayor a la cantidad de artículos de un producto
      * en el almacén, se añadirán al carrito todas las unidades disponibles.
      * @param prod, el id del producto a sustraer del almacén.
-     * @param cant, la cantidad de elementos del producto dado a sustraer.
-     * @return el número de elementos introducidos.
+     * @param cant, la cantidad de artículos del producto dado a sustraer.
+     * @return el número de artículos introducidos.
      */
     public boolean meteAlCarrito(int prod, int cant){
         int cantProd = miSuper.enExistencia(prod);
