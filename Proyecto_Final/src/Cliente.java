@@ -61,7 +61,7 @@ public class Cliente{
      * @param cant, la cantidad de artículos del producto dado a sustraer.
      * @return el número de artículos introducidos.
      */
-    public boolean meteAlCarrito(int prod, int cant){
+    public int meteAlCarrito(int prod, int cant){
         int cantProd = miSuper.enExistencia(prod);
         try{
             Producto p = new Producto(miSuper.retiraAlmacen(prod, cantProd),
