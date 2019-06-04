@@ -11,6 +11,8 @@ public class Cliente{
         random = new Random();
     }
 
+    
+
     /*
      * Llena el carrito de un número aleatorio de productos.
      * La probabilidad de llevar menos de 20 productos es de 50%, la misma que
