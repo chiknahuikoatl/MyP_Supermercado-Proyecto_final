@@ -1,5 +1,4 @@
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
@@ -8,6 +7,7 @@ import java.util.LinkedList;
 public class Proveedor {
 
     private LinkedList<Producto> inventario = new LinkedList<>();
+    private String registro = "Productos agotados\n-------------------------------------------";
 
     public Proveedor() {
         cargaInventario("../../inventario.txt");
@@ -40,16 +40,17 @@ public class Proveedor {
         }
     }
 
-    private LinkedList<Producto> getInventario() {
+    public LinkedList<Producto> getInventario() {
         return this.inventario;
     }
 
-    private void imprime() {
-        System.out.println(this.inventario.toString());
+    public Producto llenaProducto(int producto) {
+        Producto p = this.inventario.get(producto);
+        registro += String.format("\n%d\t%s\t%2f", p.getID(), p.getNombre(), p.getPrecio());
+        return p;
     }
 
-    public static void main(String[] args) {
-        Proveedor p = new Proveedor("fallo.txt");
-        p.imprime();
+    public String getRegistro() {
+        return registro + "\n-------------------------------------------";
     }
 }
