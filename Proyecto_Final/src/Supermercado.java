@@ -150,22 +150,22 @@ public class Supermercado{
 
     public void ejecuta(int tiempo) {
         creaCajas();
-        while (!Simulador.getBandera()) {
-            int numeroPersonas = rd.nextInt(300)+100;
-            for (int i = 0; i < numeroPersonas; i++) {
-                double proba = rd.nextDouble();
-                Cliente c = new Cliente(this, proba);
-                formaEnCaja(c);
-                if (i == 100) {
-                    despierta();
-                }
-            }            
-        }
+        int numeroPersonas = rd.nextInt(300)+100;
+        for (int i = 0; i < numeroPersonas; i++) {
+            double proba = rd.nextDouble();
+            Cliente c = new Cliente(this, proba);
+            formaEnCaja(c);
+            if (i == 100) {
+                despierta();
+            }
+        }            
+        /* while (!Simulador.getBandera()) {
+        } */
     }
 
     public void despierta() {
         for (int i = 0; i < cajas.length; i++) {
-            cajas[i].start();
+            cajas[i].run();
         }
     }
 }

@@ -1,4 +1,5 @@
 import java.util.Scanner;
+import java.util.concurrent.TimeUnit;
 
 public class Simulador {
 
@@ -64,7 +65,7 @@ public class Simulador {
                 sop("Dos");
                 break;
             default:
-                sop("Omisión");
+                sop("Omisión
                 break;
         }
 
@@ -86,6 +87,14 @@ public class Simulador {
         sop("Cajas rápidas: "+6+"Probabilidad de llevar más de 20 artículos: "+0.5);
         Supermercado superMercado = new Supermercado(6, 0.5, fecha);
         superMercado.ejecuta(1000);
+        try {
+            TimeUnit.SECONDS.sleep(1000);
+            this.programaTerminado = true;
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+        
     }
 
     public static void sop(String s){

@@ -54,15 +54,16 @@ public class Caja extends Thread {
     
     private void cobra() {
         if (cliente > fila.size() || !fila.isEmpty() || fila.size() == 0) {
+            Simulador.sop("no cobra");
             return;   
         }
         Cliente c = fila.get(cliente);
-        double tiempoDeEspera = c.getCarrito().size() * 0.002; // Tiempo que tardará en realizar la compra
-        try {
+        //double tiempoDeEspera = c.getCarrito().size() * 0.002; // Tiempo que tardará en realizar la compra
+        /* try {
             TimeUnit.SECONDS.sleep((int)tiempoDeEspera);
         } catch (InterruptedException e) {
             System.out.println("Error al intentar pausar la ejecucion de cobro");
-        }
+        } */
         int id = c.hashCode(); // Id único del ticket.
         int cancela = rd.nextInt(100);
         // Realización del ticket
@@ -86,6 +87,7 @@ public class Caja extends Thread {
         ticket += "----------------------------------------------";
         tickets.add(ticket);
     
+        
         this.totalCompras++;
         this.cliente++;
     }
@@ -127,10 +129,10 @@ public class Caja extends Thread {
 
     @Override
     public void run() {
-        while (!Simulador.getBandera()) {
-            cobra();
-        }
-        cierreDeCaja();
+        /* while (!Simulador.getBandera()) {
+            cierreDeCaja();
+        } */
+        cobra();
     }
 
     // Getters y setters
