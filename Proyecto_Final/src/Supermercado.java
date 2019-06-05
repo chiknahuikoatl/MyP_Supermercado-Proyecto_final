@@ -69,6 +69,11 @@ public class Supermercado{
         return new Producto(prod);
     }
 
+    public static void meteAlamcen(int producto, int cantidadProducto){
+        Producto p = Almacen[producto];
+        p.setCantidad(p.getCantidad()+cantidadProducto);
+    }
+
     /**
      * Forma al cliente en la caja más vacía.
      * Si el cliente tiene 20 artículos o menos, s.p.g. lo forma en la última
@@ -130,9 +135,12 @@ public class Supermercado{
 
         }
 
-        public String cancela(int id, int cantidad, String nombre, double precio, double total) {
-            return String.format("Cancelacion\n%d\t%d\t%s\t%f\t%f", id, cantidad, nombre, precio, total);
-        }   
+        public String cancela(int id, int cantidad, String nombre,
+                              double precio, double total) {
+            Supermercado.meteAlamcen(id,cantidad);
+            return String.format("Cancelacion\n%d\t%d\t%s\t%f\t%f", id,
+                cantidad, nombre, precio, total);
+        }
     }
 
     public void ejecuta(int tiempo) {
@@ -146,7 +154,7 @@ public class Supermercado{
                 if (i == 30) {
                     despierta();
                 }
-            }            
+            }
         }
     }
 
