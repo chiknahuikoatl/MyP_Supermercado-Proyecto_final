@@ -11,6 +11,7 @@ public class Supermercado{
     private static Fecha fecha;
     private int numCajasRapidas;
     private Random rd = new Random();
+    private Proveedor proveedor = new Proveedor();
 
     private static LinkedList<Cliente> unifila = new LinkedList<>();
 
@@ -18,6 +19,17 @@ public class Supermercado{
         this.numCajasRapidas = numCajasRapidas;
         this.fecha = fecha;
         cajas = new Caja[15];
+        llenaAlmacen();
+    }
+
+    private void llenaAlmacen() {
+        LinkedList<Producto> inventario = proveedor.getInventario();
+        almacen = new Producto[inventario.size()];
+        int i = 0;
+        for (Producto p : inventario) {
+            almacen[i] = p;
+            i++;
+        }
     }
 
     /**
@@ -60,6 +72,7 @@ public class Supermercado{
             throws YaSeAcaboJovenException{
         Producto prod = almacen[producto];
         if(prod.getCantidad() == 0){
+            almacen[producto] = proveedor.llenaProducto(producto);
             throw new YaSeAcaboJovenException(prod);
         }else if(prod.getCantidad() < cantidadProducto){
             prod.setCantidad(0);
