@@ -12,7 +12,7 @@ public class Supermercado{
     private int numCajasRapidas;
     private Random rd = new Random();
 
-    private static LinkedList<Cliente> unifila;
+    private static LinkedList<Cliente> unifila = new LinkedList<>();
 
     public Supermercado(int numCajasRapidas, double probaMasDeVeinte, Fecha fecha){
         this.numCajasRapidas = numCajasRapidas;
@@ -146,12 +146,12 @@ public class Supermercado{
     public void ejecuta(int tiempo) {
         creaCajas();
         while (!Simulador.getBandera()) {
-            int numeroPersonas = rd.nextInt(300)+1;
+            int numeroPersonas = rd.nextInt(300)+100;
             for (int i = 0; i < numeroPersonas; i++) {
                 double proba = rd.nextDouble();
                 Cliente c = new Cliente(this, proba);
                 formaEnCaja(c);
-                if (i == 30) {
+                if (i == 100) {
                     despierta();
                 }
             }
