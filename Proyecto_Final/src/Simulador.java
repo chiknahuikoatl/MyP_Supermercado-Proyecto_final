@@ -70,7 +70,7 @@ public class Simulador {
 
          */
 
-        
+
     }
 
     public void imprimeMenuUno(){
@@ -83,7 +83,7 @@ public class Simulador {
 
     public void opcionDos(){
         sop("Simulación por con datos por omisión.");
-        sop("Cajas rápidas: "+6+"Probabilidad de llevar más de 20 artículos: "+0.5);
+        sop("Cajas rápidas: "+6+"; Probabilidad de llevar más de 20 artículos: "+0.5);
         Supermercado superMercado = new Supermercado(6, 0.5, fecha);
         superMercado.ejecuta(1000);
     }
