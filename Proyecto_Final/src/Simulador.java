@@ -1,8 +1,9 @@
 import java.util.Scanner;
+import java.util.concurrent.TimeUnit;
 
 public class Simulador {
 
-    private static boolean programaTerminado = false;
+    public static boolean programaTerminado = false;
     private static Fecha fecha = new Fecha();
 
     public static boolean getBandera() {
@@ -20,7 +21,7 @@ public class Simulador {
         sop("3) ejecutar simulacion con parámetros distintos.");
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
         /* Scanner sc = new Scanner(System.in);
         Simulador s = new Simulador();
         s.muestraMenu();
@@ -64,13 +65,16 @@ public class Simulador {
                 sop("Dos");
                 break;
             default:
-                sop("Omisión");
+                sop("Omisión
                 break;
         }
 
          */
+        //Detencion de cobro de caja
         Simulador s = new Simulador();
+        TimeUnit.SECONDS.sleep(5);
         s.opcionDos();
+        programaTerminado = false;
     }
 
     public void imprimeMenuUno(){
@@ -81,11 +85,11 @@ public class Simulador {
         sop("3) Ver lista de tickets.");
     }
 
-    public void opcionDos(){
+    public void opcionDos() throws InterruptedException {
         sop("Simulación por con datos por omisión.");
         sop("Cajas rápidas: "+6+"; Probabilidad de llevar más de 20 artículos: "+0.5);
         Supermercado superMercado = new Supermercado(6, 0.5, fecha);
-        superMercado.ejecuta(1000);
+        superMercado.ejecuta(10);
     }
 
     public static void sop(String s){

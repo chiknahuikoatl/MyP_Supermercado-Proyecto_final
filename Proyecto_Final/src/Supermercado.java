@@ -1,6 +1,7 @@
 import java.lang.Thread;
 import java.util.LinkedList;
 import java.util.Random;
+import java.util.concurrent.TimeUnit;
 import java.lang.InterruptedException;
 
 public class Supermercado{
@@ -11,6 +12,7 @@ public class Supermercado{
     private static Fecha fecha;
     private int numCajasRapidas;
     private Random rd = new Random();
+    private Proveedor proveedor = new Proveedor();
 
     private static LinkedList<Cliente> unifila = new LinkedList<>();
 
@@ -18,6 +20,17 @@ public class Supermercado{
         this.numCajasRapidas = numCajasRapidas;
         this.fecha = fecha;
         cajas = new Caja[15];
+        llenaAlmacen();
+    }
+
+    private void llenaAlmacen() {
+        LinkedList<Producto> inventario = proveedor.getInventario();
+        almacen = new Producto[inventario.size()];
+        int i = 0;
+        for (Producto p : inventario) {
+            almacen[i] = p;
+            i++;
+        }
     }
 
     /**
@@ -60,6 +73,7 @@ public class Supermercado{
             throws YaSeAcaboJovenException{
         Producto prod = almacen[producto];
         if(prod.getCantidad() == 0){
+            almacen[producto] = proveedor.llenaProducto(producto);
             throw new YaSeAcaboJovenException(prod);
         }else if(prod.getCantidad() < cantidadProducto){
             prod.setCantidad(0);
@@ -143,7 +157,7 @@ public class Supermercado{
         }
     }
 
-    public void ejecuta(int tiempo) {
+    public void ejecuta(int tiempo) throws InterruptedException {
         creaCajas();
         while (!Simulador.getBandera()) {
             int numeroPersonas = rd.nextInt(300)+100;
@@ -158,9 +172,9 @@ public class Supermercado{
         }
     }
 
-    public void despierta() {
+    public void despierta() throws InterruptedException {
         for (int i = 0; i < cajas.length; i++) {
-            cajas[i].start();
+            cajas[i].join(1000);;
         }
     }
 }
