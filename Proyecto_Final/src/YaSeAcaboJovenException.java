@@ -1,6 +1,6 @@
 public class YaSeAcaboJovenException extends Exception{
     final static String MENSAJE = "Ya se acabó el producto que busca, joven."+
-        "Vuelva mañana.";
+        " Vuelva mañana.";
 
     /**
      *

@@ -17,7 +17,7 @@ public class Caja extends Thread {
     private int cliente = 0;
     private int detener;
     private Random rd;
-    private Supermercado compartido;
+    private Supermercado miSuper;
 
     public Caja() {
         rd = new Random();
@@ -35,13 +35,21 @@ public class Caja extends Thread {
         this.maximo = 0;
     }
 
-    /**
-     * Método encargado de regresar el número de clientes formados.
-     *
-     * @return Numero de clientes formados.
-     */
-    public int getLongitud() {
-        return this.fila.size();
+    public Caja(LinkedList<Cliente> fila, Supermercado miSuper){
+        this.fila = fila;
+        this.miSuper = miSuper;
+        rd = new Random();
+        paraCancelacion = rd.nextInt(100);
+        this.totalCompras = 0;
+        this.maximo = 0;
+    }
+
+    @Override
+    public void run() {
+        while (miSuper.estaAbierto() && fila.size() != 0) {
+            cobra();
+        }
+        cierreDeCaja();
     }
 
     /**
@@ -55,47 +63,48 @@ public class Caja extends Thread {
     }
 
     private void cobra() {
-        if (!fila.isEmpty() || fila.size() == 0) {
-            Simulador.sop("no cobra");
-            return;
-        }
-        Cliente c = fila.get(cliente);
-        Simulador.sop("cobra con el cliente " + c.toString());
-        int detener = rd.nextInt(100);
-        if (detener == this.detener) {
-            //Detencion de cobro de caja
-            try {
-                TimeUnit.SECONDS.sleep(2);
-            } catch (InterruptedException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
+        // if (!fila.isEmpty() || fila.size() == 0) {
+        //     //Simulador.sop("no cobra");
+        //     return;
+        // }
+        if(fila.size() != 0){
+            Cliente c = fila.getFirst();
+            Simulador.sop("cobra con el cliente " + c.toString());
+            int detener = rd.nextInt(100);
+            if (detener == this.detener) {
+                //Detencion de cobro de caja
+                try {
+                    Thread.sleep(75);
+                } catch (InterruptedException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
             }
-        }
-        int id = c.hashCode(); // Id único del ticket.
-        int cancela = rd.nextInt(100);
-        // Realización del ticket
-        double subTotal = 0;
-        String ticket = "TICKET DE COMPRA " + id;
-        ticket += "----------------------------------------------";
-        ticket += "#Producto\tCantidad\tNombre\tPrecio\tTotal";
-        for (Producto p : c.getCarrito()) {
-            double total = p.getCantidad() * p.getPrecio();
-            subTotal += total;
-            ticket += generaTicket(p.getID(), p.getCantidad(), p.getNombre(), p.getPrecio(), total);
-            if (cancela == this.paraCancelacion) {
-                ticket += compartido.cancela(p.getID(), p.getCantidad(), p.getNombre(), p.getPrecio(), total);
-                subTotal -= total;
+            int id = c.hashCode(); // Id único del ticket.
+            int cancela = rd.nextInt(100);
+            // Realización del ticket
+            double subTotal = 0;
+            String ticket = "TICKET DE COMPRA " + id;
+            ticket += "----------------------------------------------";
+            ticket += "#Producto\tCantidad\tNombre\tPrecio\tTotal";
+            for (Producto p : c.getCarrito()) {
+                double total = p.getCantidad() * p.getPrecio();
+                subTotal += total;
+                ticket += generaTicket(p.getID(), p.getCantidad(), p.getNombre(), p.getPrecio(), total);
+                if (cancela == this.paraCancelacion) {
+                    ticket += miSuper.cancela(p.getID(), p.getCantidad(), p.getNombre(), p.getPrecio(), total);
+                    subTotal -= total;
+                }
             }
+            double iva = subTotal * 0.08;
+            ticket += String.format("Subtotal:%f\nIVA:%f\nTotal:%f", subTotal, iva, (iva + subTotal));
+            ticket += "----------------------------------------------";
+            ticket += "¡GRACIAS POR SU COMPRA, VUELVE PRONTO!";
+            ticket += "----------------------------------------------";
+            tickets.add(ticket);
+            this.totalCompras++;
+            this.cliente++;
         }
-        double iva = subTotal * 0.08;
-        ticket += String.format("Subtotal:%f\nIVA:%f\nTotal:%f", subTotal, iva, (iva + subTotal));
-        ticket += "----------------------------------------------";
-        ticket += "¡GRACIAS POR SU COMPRA, VUELVE PRONTO!";
-        ticket += "----------------------------------------------";
-        tickets.add(ticket);
-
-        this.totalCompras++;
-        this.cliente++;
     }
 
     /**
@@ -136,21 +145,21 @@ public class Caja extends Thread {
         }
     }
 
-    @Override
-    public void run() {
-
-        while (!Simulador.getBandera()) {
-            cobra();
-        } 
-        cierreDeCaja();
-    }
-
     // Getters y setters
     public LinkedList<Cliente> getFila() {
         if (maximo < this.fila.size()) {
             maximo = fila.size();
         }
         return this.fila;
+    }
+
+    /**
+     * Método encargado de regresar el número de clientes formados.
+     *
+     * @return Numero de clientes formados.
+     */
+    public int getLongitud() {
+        return this.fila.size();
     }
 
     public int getMaximo() {

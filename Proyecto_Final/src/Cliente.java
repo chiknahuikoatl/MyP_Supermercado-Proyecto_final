@@ -12,6 +12,8 @@ public class Cliente{
         this.miSuper = miSuper;
         this.probaMasDeVeinte = probaMasDeVeinte;
         random = new Random();
+        carrito = new LinkedList<>();
+        compra();
     }
 
     /**
@@ -21,7 +23,6 @@ public class Cliente{
     */
     public void compra(){
         llenaCarrito();
-        miSuper.formaEnCaja(this);
     }
 
     /**
@@ -33,9 +34,9 @@ public class Cliente{
     public LinkedList<Producto> llenaCarrito(){
         int productosAComprar;
         if(random.nextDouble() < probaMasDeVeinte){
-            productosAComprar = random.nextInt(21);
-        }else{
             productosAComprar = random.nextInt(181) + 20;
+        }else{
+            productosAComprar = random.nextInt(21);
         }
         numeroArticulos = productosAComprar;
         while(productosAComprar != 0){

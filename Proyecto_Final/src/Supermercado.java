@@ -13,14 +13,18 @@ public class Supermercado{
     private int numCajasRapidas;
     private Random rd = new Random();
     private Proveedor proveedor = new Proveedor();
+    private boolean abierto;
+    private double probaMasDeVeinte;
 
     private static LinkedList<Cliente> unifila = new LinkedList<>();
 
     public Supermercado(int numCajasRapidas, double probaMasDeVeinte, Fecha fecha){
         this.numCajasRapidas = numCajasRapidas;
+        this.probaMasDeVeinte = probaMasDeVeinte;
         this.fecha = fecha;
         cajas = new Caja[15];
         llenaAlmacen();
+        abierto = true;
     }
 
     private void llenaAlmacen() {
@@ -38,10 +42,10 @@ public class Supermercado{
      */
     public void creaCajas(){
         for(int i = 0; i < 15 - numCajasRapidas; i++){
-            cajas[i] = new Caja(new LinkedList<Cliente>());
+            cajas[i] = new Caja(new LinkedList<Cliente>(), this);
         }
         for(int i = 15 - numCajasRapidas; i < 15; i++){
-            cajas[i] = new Caja(unifila);
+            cajas[i] = new Caja(unifila, this);
         }
     }
 
@@ -84,7 +88,7 @@ public class Supermercado{
     }
 
     public static void meteAlamcen(int producto, int cantidadProducto){
-        Producto p = Almacen[producto];
+        Producto p = almacen[producto];
         p.setCantidad(p.getCantidad()+cantidadProducto);
     }
 
@@ -135,6 +139,14 @@ public class Supermercado{
         return gerente.cancela(id, cantidad, nombre, precio, total);
     }
 
+    /**
+     * Devuelve una bandera que indica si el supermercado está abierto-
+     * @return abierto si el super sigue abierto.
+     */
+    public boolean estaAbierto(){
+        return this.abierto;
+    }
+
     // Getters y setters
     public Producto[] getAlmacen(){
         return almacen;
@@ -159,22 +171,30 @@ public class Supermercado{
 
     public void ejecuta(int tiempo) throws InterruptedException {
         creaCajas();
-        while (!Simulador.getBandera()) {
-            int numeroPersonas = rd.nextInt(300)+100;
+        int numeroPersonas = rd.nextInt(300)+100;
+        while(abierto){
+            despierta();
             for (int i = 0; i < numeroPersonas; i++) {
-                double proba = rd.nextDouble();
-                Cliente c = new Cliente(this, proba);
+                Cliente c = new Cliente(this, probaMasDeVeinte);
                 formaEnCaja(c);
-                if (i == 100) {
-                    despierta();
-                }
+                Thread.sleep(50);
+            }
+            Thread.sleep(3);
+            abierto = false;
+            for (int i = 0; i < cajas.length; i++) {
+                cajas[i].join();
             }
         }
     }
 
+
+    // Thread.sleep(5);
+    // Simulador.opcionDos();
+    // abierto = false;
+
     public void despierta() throws InterruptedException {
         for (int i = 0; i < cajas.length; i++) {
-            cajas[i].join(1000);;
+            cajas[i].start();
         }
     }
 }

@@ -10,6 +10,8 @@ public class Simulador {
         return programaTerminado;
     }
 
+    //public void
+
     public static Fecha getFecha(){
         return fecha;
     }
@@ -72,9 +74,8 @@ public class Simulador {
          */
         //Detencion de cobro de caja
         Simulador s = new Simulador();
-        TimeUnit.SECONDS.sleep(5);
-        s.opcionDos();
-        programaTerminado = false;
+        opcionDos();
+
     }
 
     public void imprimeMenuUno(){
@@ -85,7 +86,7 @@ public class Simulador {
         sop("3) Ver lista de tickets.");
     }
 
-    public void opcionDos() throws InterruptedException {
+    public static void opcionDos() throws InterruptedException {
         sop("Simulación por con datos por omisión.");
         sop("Cajas rápidas: "+6+"; Probabilidad de llevar más de 20 artículos: "+0.5);
         Supermercado superMercado = new Supermercado(6, 0.5, fecha);
