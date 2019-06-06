@@ -10,25 +10,27 @@ public class Caja extends Thread {
     private LinkedList<Cliente> fila; // Linked list que será usada cómo cola
     // Lista encargada de almacenar los ticket generados por cada compra para el
     // proceso de persitencia.
-    private LinkedList<String> tickets;
+    private LinkedList<String> tickets = new LinkedList<>();
     private int totalCompras; // Contador de compras realizadas en el día
     private int maximo; // Contador correspondiente al máximo número de clientes en la caja.
     private int paraCancelacion;
     private int cliente = 0;
+    private int detener;
     private Random rd;
     private Supermercado compartido;
 
     public Caja() {
-        rd                = new Random();
-        paraCancelacion   =  rd.nextInt(100);
+        rd = new Random();
+        paraCancelacion = rd.nextInt(100);
         this.totalCompras = 0;
-        this.maximo       = 0;
+        this.maximo = 0;
+        detener = rd.nextInt(100);
     }
 
     public Caja(LinkedList<Cliente> fila) {
         this.fila = fila;
         rd = new Random();
-        paraCancelacion =  rd.nextInt(100);
+        paraCancelacion = rd.nextInt(100);
         this.totalCompras = 0;
         this.maximo = 0;
     }
@@ -51,19 +53,24 @@ public class Caja extends Thread {
     public void forma(Cliente c) {
         fila.add(c);
     }
-    
+
     private void cobra() {
-        if (cliente > fila.size() || !fila.isEmpty() || fila.size() == 0) {
+        if (!fila.isEmpty() || fila.size() == 0) {
             Simulador.sop("no cobra");
-            return;   
+            return;
         }
         Cliente c = fila.get(cliente);
-        //double tiempoDeEspera = c.getCarrito().size() * 0.002; // Tiempo que tardará en realizar la compra
-        /* try {
-            TimeUnit.SECONDS.sleep((int)tiempoDeEspera);
-        } catch (InterruptedException e) {
-            System.out.println("Error al intentar pausar la ejecucion de cobro");
-        } */
+        Simulador.sop("cobra con el cliente " + c.toString());
+        int detener = rd.nextInt(100);
+        if (detener == this.detener) {
+            //Detencion de cobro de caja
+            try {
+                TimeUnit.SECONDS.sleep(2);
+            } catch (InterruptedException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        }
         int id = c.hashCode(); // Id único del ticket.
         int cancela = rd.nextInt(100);
         // Realización del ticket
@@ -86,12 +93,11 @@ public class Caja extends Thread {
         ticket += "¡GRACIAS POR SU COMPRA, VUELVE PRONTO!";
         ticket += "----------------------------------------------";
         tickets.add(ticket);
-    
-        
+
         this.totalCompras++;
         this.cliente++;
     }
-    
+
     /**
      * Método auxiliar para la generación del ticket que concatena los datos de id
      * del producto, la cantidad comprada, el nombre del producto, el precio
@@ -105,7 +111,7 @@ public class Caja extends Thread {
      * @return
      */
     public String generaTicket(int id, int cantidad, String nombre, double precio, double total) {
-           String compra = String.format("%d\t%d\t%s\t%f\t%f", id, cantidad, nombre, precio, total);
+        String compra = String.format("%d\t%d\t%s\t%f\t%f", id, cantidad, nombre, precio, total);
         return compra;
     }
 
@@ -117,11 +123,14 @@ public class Caja extends Thread {
         try {
             fos = new FileOutputStream(file);
             PrintStream writer = new PrintStream(fos);
-            for (String s : this.tickets) {
-                writer.println(s);
+            if (!tickets.isEmpty()) {
+                for (String s : this.tickets) {
+                    writer.println(s);
+                }
             }
             writer.println("total de compras:" + this.totalCompras);
             writer.close();
+            System.exit(1);
         } catch (FileNotFoundException e) {
             System.out.println("error al intentar crear el archivo: " + nombre);
         }
@@ -129,10 +138,11 @@ public class Caja extends Thread {
 
     @Override
     public void run() {
-        /* while (!Simulador.getBandera()) {
-            cierreDeCaja();
-        } */
-        cobra();
+
+        while (!Simulador.getBandera()) {
+            cobra();
+        } 
+        cierreDeCaja();
     }
 
     // Getters y setters

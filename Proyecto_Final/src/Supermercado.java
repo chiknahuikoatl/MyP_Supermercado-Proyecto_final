@@ -1,6 +1,7 @@
 import java.lang.Thread;
 import java.util.LinkedList;
 import java.util.Random;
+import java.util.concurrent.TimeUnit;
 import java.lang.InterruptedException;
 
 public class Supermercado{
@@ -148,24 +149,21 @@ public class Supermercado{
         }   
     }
 
-    public void ejecuta(int tiempo) {
+    public void ejecuta(int tiempo) throws InterruptedException {
         creaCajas();
         int numeroPersonas = rd.nextInt(300)+100;
         for (int i = 0; i < numeroPersonas; i++) {
             double proba = rd.nextDouble();
             Cliente c = new Cliente(this, proba);
             formaEnCaja(c);
-            if (i == 100) {
-                despierta();
-            }
         }            
-        /* while (!Simulador.getBandera()) {
-        } */
+        despierta();
+        Simulador.sop("numero de personas: " + numeroPersonas);
     }
 
-    public void despierta() {
+    public void despierta() throws InterruptedException {
         for (int i = 0; i < cajas.length; i++) {
-            cajas[i].run();
+            cajas[i].join(1000);;
         }
     }
 }
