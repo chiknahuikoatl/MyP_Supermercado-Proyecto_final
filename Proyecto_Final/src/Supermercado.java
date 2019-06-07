@@ -6,6 +6,7 @@ import java.lang.InterruptedException;
 
 public class Supermercado{
 
+    public int numeroCliente = 1;
     private static Producto[] almacen;
     private static Caja[] cajas;
     private Gerente gerente;
@@ -26,6 +27,8 @@ public class Supermercado{
         llenaAlmacen();
         abierto = true;
     }
+
+    public Supermercado() {}
 
     private void llenaAlmacen() {
         LinkedList<Producto> inventario = proveedor.getInventario();
@@ -78,7 +81,8 @@ public class Supermercado{
         Producto prod = almacen[producto];
         if(prod.getCantidad() == 0){
             almacen[producto] = proveedor.llenaProducto(producto);
-            throw new YaSeAcaboJovenException(prod);
+            //Simulador.sop("retiro del almacen");
+            //throw new YaSeAcaboJovenException(prod);
         }else if(prod.getCantidad() < cantidadProducto){
             prod.setCantidad(0);
         }else{
@@ -100,12 +104,16 @@ public class Supermercado{
      * @param cliente a formar.
      */
     public void formaEnCaja(Cliente cliente){
+        Simulador.sop(""+numeroCliente);
+        cliente.id = numeroCliente;
         if(cliente.getNumeroArticulos() <= 20){
             unifila.add(cliente);
         }else{
             Caja caja = cajaMasVacia();
             caja.forma(cliente);
         }
+
+        numeroCliente ++;
     }
 
     /**

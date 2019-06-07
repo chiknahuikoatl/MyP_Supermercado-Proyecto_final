@@ -1,12 +1,15 @@
 import java.util.LinkedList;
 import java.util.Random;
 
+import org.omg.IOP.ProfileIdHelper;
+
 public class Cliente{
     private static Supermercado miSuper;
     private LinkedList<Producto> carrito;
     private int numeroArticulos;
     private double probaMasDeVeinte; //La proba de tener más de veinte artículos
     private Random random;
+    public int id;
 
     public Cliente(Supermercado miSuper, double probaMasDeVeinte){
         this.miSuper = miSuper;
@@ -40,9 +43,17 @@ public class Cliente{
         }
         numeroArticulos = productosAComprar;
         while(productosAComprar != 0){
+            if (productosAComprar < 0) {
+                break;
+            }
             int cantProd = random.nextInt(productosAComprar) + 1;
+            Simulador.sop(String.valueOf(cantProd));
             int prod = random.nextInt(miSuper.getAlmacen().length);
             productosAComprar -= meteAlCarrito(prod, cantProd);
+            int bandera = meteAlCarrito(prod, cantProd);
+            if (bandera == 0) {
+                productosAComprar --;
+            }
         }
         return this.carrito;
     }
@@ -62,9 +73,9 @@ public class Cliente{
             Producto p = new Producto(miSuper.retiraAlmacen(prod, cantProd),
                 cantProd);
             carrito.add(p);
+            Simulador.sop("almacen:\n" + miSuper.getAlmacen().toString());
             return p.getCantidad();
         }catch(YaSeAcaboJovenException e){
-            Simulador.sop("" + e);
             return 0;
         }
     }
@@ -76,5 +87,13 @@ public class Cliente{
 
     public int getNumeroArticulos(){
         return this.numeroArticulos;
+    }
+
+    public String toString() {
+        String s = "";
+        for (Producto p : carrito) {
+            s += p.toString();
+        }
+        return s;
     }
 }
