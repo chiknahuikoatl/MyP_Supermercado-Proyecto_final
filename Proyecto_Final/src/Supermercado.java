@@ -3,6 +3,10 @@ import java.util.LinkedList;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 import java.lang.InterruptedException;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.PrintStream;
 
 public class Supermercado{
 
@@ -16,6 +20,7 @@ public class Supermercado{
     private Proveedor proveedor = new Proveedor();
     private boolean abierto;
     private double probaMasDeVeinte;
+    public LinkedList<String> tickets = new LinkedList<>();
 
     private static LinkedList<Cliente> unifila = new LinkedList<>();
 
@@ -179,16 +184,20 @@ public class Supermercado{
 
     public void ejecuta(int tiempo) throws InterruptedException {
         creaCajas();
-        int numeroPersonas = rd.nextInt(300)+100;
+        //int numeroPersonas = rd.nextInt(300)+100;
+        int numeroPersonas = 330;
         while(abierto){
             despierta();
+            int timpo = (int)(numeroPersonas*0.005)+1;
             for (int i = 0; i < numeroPersonas; i++) {
                 Cliente c = new Cliente(this, probaMasDeVeinte);
                 formaEnCaja(c);
-                Thread.sleep(50);
+                //Thread.sleep(timpo);
             }
-            Thread.sleep(3);
+            Thread.sleep(tiempo);
             abierto = false;
+            cierreDeCaja();
+            Simulador.sop("numero de personas: " + numeroPersonas + "\ntiepo de espera: " + tiempo);
             for (int i = 0; i < cajas.length; i++) {
                 cajas[i].join();
             }
@@ -204,5 +213,34 @@ public class Supermercado{
         for (int i = 0; i < cajas.length; i++) {
             cajas[i].start();
         }
+    }
+
+    public void cierreDeCaja() {
+        Fecha fecha = Simulador.getFecha();
+        String nombre = String.format("Ventas de ", fecha.toString());
+        File file = new File(nombre);
+        FileOutputStream fos;
+        int totalCompras = totalVentas();
+        try {
+            fos = new FileOutputStream(file);
+            PrintStream writer = new PrintStream(fos);
+            for (String s : tickets) {
+                writer.println(s);
+            }
+            //writer.println(this.ticketsDia);
+            writer.println("total de compras:" + totalCompras);
+            writer.close();
+            System.exit(1);
+        } catch (FileNotFoundException e) {
+            System.out.println("error al intentar crear el archivo: " + nombre);
+        }
+    }
+
+    public int totalVentas() {
+        int total = 0;
+        for (int i = 0; i < cajas.length; i++) {
+            total += cajas[i].totalCompras;
+        }
+        return total;
     }
 }

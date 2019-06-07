@@ -11,7 +11,7 @@ public class Caja extends Thread {
     // Lista encargada de almacenar los ticket generados por cada compra para el
     // proceso de persitencia.
     private String ticketsDia = "";
-    private int totalCompras; // Contador de compras realizadas en el día
+    public int totalCompras; // Contador de compras realizadas en el día
     private int maximo; // Contador correspondiente al máximo número de clientes en la caja.
     private int paraCancelacion;
     private int cliente = 0;
@@ -49,7 +49,7 @@ public class Caja extends Thread {
         while (miSuper.estaAbierto() || fila.size() != 0) {
             cobra();
         }
-        cierreDeCaja();
+        //miSuper.cierreDeCaja();
     }
 
     /**
@@ -104,7 +104,8 @@ public class Caja extends Thread {
             ticket += "----------------------------------------------\n";
             ticket += "¡GRACIAS POR SU COMPRA, VUELVE PRONTO!\n";
             ticket += "----------------------------------------------\n";
-            ticketsDia = ticketsDia + ticket +"\n";
+            //ticketsDia = ticketsDia + ticket +"\n";
+            miSuper.tickets.add(ticket);
             this.totalCompras++;
             this.cliente++;
         }
@@ -125,23 +126,6 @@ public class Caja extends Thread {
     public String generaTicket(int id, int cantidad, String nombre, double precio, double total) {
         String compra = String.format("%d\t%d\t%s\t%f\t%f\n", id, cantidad, nombre, precio, total);
         return compra;
-    }
-
-    public void cierreDeCaja() {
-        Fecha fecha = Simulador.getFecha();
-        String nombre = String.format("Ventas de ", fecha.toString());
-        File file = new File(nombre);
-        FileOutputStream fos;
-        try {
-            fos = new FileOutputStream(file);
-            PrintStream writer = new PrintStream(fos);
-            writer.println(this.ticketsDia);
-            writer.println("total de compras:" + this.totalCompras);
-            writer.close();
-            System.exit(1);
-        } catch (FileNotFoundException e) {
-            System.out.println("error al intentar crear el archivo: " + nombre);
-        }
     }
 
     // Getters y setters

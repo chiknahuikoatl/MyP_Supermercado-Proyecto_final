@@ -21,7 +21,7 @@ public class TestCaja {
         cliente5.compra();
         fila.add(cliente5);
         c = new Caja(fila, sm);
-        c.cobra();
-        c.cierreDeCaja();
+        //c.cobra();
+        //c.cierreDeCaja();
     }
 }
