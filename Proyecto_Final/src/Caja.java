@@ -63,16 +63,15 @@ public class Caja extends Thread {
     }
 
     public void cobra() {
-        while(fila.size() != 0){
-            try {
-                Thread.sleep(50);
-            } catch (InterruptedException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
+        while(fila.size() > 0){
+            // try {
+            //     Thread.sleep(50);
+            // } catch (InterruptedException e) {
+            //     // TODO Auto-generated catch block
+            //     e.printStackTrace();
+            // }
             Cliente c = fila.getFirst();
             fila.removeFirst();
-            Simulador.sop("cobra con el cliente " + c.toString());
             int detener = rd.nextInt(100);
             if (detener == this.detener) {
                 //Detencion de cobro de caja

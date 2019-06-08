@@ -47,7 +47,6 @@ public class Cliente{
                 break;
             }
             int cantProd = random.nextInt(productosAComprar) + 1;
-            Simulador.sop(String.valueOf(cantProd));
             int prod = random.nextInt(miSuper.getAlmacen().length);
             productosAComprar -= meteAlCarrito(prod, cantProd);
             int bandera = meteAlCarrito(prod, cantProd);
@@ -73,7 +72,6 @@ public class Cliente{
             Producto p = new Producto(miSuper.retiraAlmacen(prod, cantProd),
                 cantProd);
             carrito.add(p);
-            Simulador.sop("almacen:\n" + miSuper.getAlmacen().toString());
             return p.getCantidad();
         }catch(YaSeAcaboJovenException e){
             return 0;

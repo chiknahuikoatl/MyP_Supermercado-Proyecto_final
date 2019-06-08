@@ -67,7 +67,6 @@ public class Supermercado{
         try{
             return almacen[producto].getCantidad();
         }catch(IndexOutOfBoundsException e){
-            Simulador.sop("Producto inexistente.");
             return -1;
         }
     }
@@ -185,7 +184,7 @@ public class Supermercado{
     public void ejecuta(int tiempo) throws InterruptedException {
         creaCajas();
         //int numeroPersonas = rd.nextInt(300)+100;
-        int numeroPersonas = 330;
+        int numeroPersonas = 130;
         while(abierto){
             despierta();
             int timpo = (int)(numeroPersonas*0.005)+1;
@@ -197,7 +196,6 @@ public class Supermercado{
             Thread.sleep(tiempo);
             abierto = false;
             cierreDeCaja();
-            Simulador.sop("numero de personas: " + numeroPersonas + "\ntiepo de espera: " + tiempo);
             for (int i = 0; i < cajas.length; i++) {
                 cajas[i].join();
             }
@@ -217,7 +215,7 @@ public class Supermercado{
 
     public void cierreDeCaja() {
         Fecha fecha = Simulador.getFecha();
-        String nombre = String.format("Ventas de ", fecha.toString());
+        String nombre = String.format("Ventas_de_%s.txt", fecha.toString());
         File file = new File(nombre);
         FileOutputStream fos;
         int totalCompras = totalVentas();
