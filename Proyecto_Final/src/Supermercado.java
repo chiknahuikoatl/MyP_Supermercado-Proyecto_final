@@ -1,4 +1,6 @@
+import java.util.ListIterator;
 import java.lang.Thread;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
@@ -148,9 +150,12 @@ public class Supermercado{
      * @param total
      * @return
      */
-    public synchronized String cancela(int id, int cantidad, String nombre, double precio, double total) {
-        return gerente.cancela(id, cantidad, nombre, precio, total);
-    }
+    public synchronized String cancela(int id, int cantidad, String nombre,
+                              double precio, double total) {
+            Supermercado.meteAlamcen(id,cantidad);
+            return String.format("Cancelacion\n%d\t%d\t%s\t%f\t%f", id,
+                cantidad, nombre, precio, total);
+        }
 
     /**
      * Devuelve una bandera que indica si el supermercado está abierto-
@@ -173,13 +178,6 @@ public class Supermercado{
         public Gerente() {
 
         }
-
-        public String cancela(int id, int cantidad, String nombre,
-                              double precio, double total) {
-            Supermercado.meteAlamcen(id,cantidad);
-            return String.format("Cancelacion\n%d\t%d\t%s\t%f\t%f", id,
-                cantidad, nombre, precio, total);
-        }
     }
 
     public void ejecuta(int tiempo) throws InterruptedException {
@@ -194,10 +192,11 @@ public class Supermercado{
                 formaEnCaja(c);
                 //Thread.sleep(timpo);
             }
-            Thread.sleep(tiempo);
+            Thread.sleep(1000);
             abierto = false;
+            //Simulador.sop(this.tickets.toString());
             cierreDeCaja();
-            Simulador.sop("numero de personas: " + numeroPersonas + "\ntiepo de espera: " + tiempo);
+            //Simulador.sop("numero de personas: " + numeroPersonas + "\ntiepo de espera: " + tiempo);
             for (int i = 0; i < cajas.length; i++) {
                 cajas[i].join();
             }
@@ -217,15 +216,17 @@ public class Supermercado{
 
     public void cierreDeCaja() {
         Fecha fecha = Simulador.getFecha();
-        String nombre = String.format("Ventas de ", fecha.toString());
+        String nombre = String.format("Ventas_de_%s.txt", fecha.toString());
         File file = new File(nombre);
         FileOutputStream fos;
         int totalCompras = totalVentas();
         try {
             fos = new FileOutputStream(file);
             PrintStream writer = new PrintStream(fos);
-            for (String s : tickets) {
-                writer.println(s);
+            ListIterator<String> it = tickets.listIterator();
+            while (it.hasNext()) {
+                    String s = String.valueOf(it.next());
+                    writer.println(s);
             }
             //writer.println(this.ticketsDia);
             writer.println("total de compras:" + totalCompras);

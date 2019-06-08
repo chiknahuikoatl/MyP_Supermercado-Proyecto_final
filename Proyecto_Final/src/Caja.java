@@ -63,16 +63,9 @@ public class Caja extends Thread {
     }
 
     public void cobra() {
-        while(fila.size() != 0){
-            try {
-                Thread.sleep(50);
-            } catch (InterruptedException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
+        while(fila.size() > 0){
             Cliente c = fila.getFirst();
             fila.removeFirst();
-            Simulador.sop("cobra con el cliente " + c.toString());
             int detener = rd.nextInt(100);
             if (detener == this.detener) {
                 //Detencion de cobro de caja
@@ -124,7 +117,7 @@ public class Caja extends Thread {
      * @return
      */
     public String generaTicket(int id, int cantidad, String nombre, double precio, double total) {
-        String compra = String.format("%d\t%d\t%s\t%f\t%f\n", id, cantidad, nombre, precio, total);
+        String compra = String.format("%06d\t%d\t%s\t%2f\t%2f\n", id, cantidad, nombre, precio, total);
         return compra;
     }
 

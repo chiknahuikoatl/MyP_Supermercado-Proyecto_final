@@ -159,7 +159,7 @@ public class Fecha{
      */
 
     public String relojToString(){
-        return String.format("%02d:%02d", minuto, hora);
+        return String.format("%02d:%02d", hora, minuto);
     }
 
     public String calendarioToString(){

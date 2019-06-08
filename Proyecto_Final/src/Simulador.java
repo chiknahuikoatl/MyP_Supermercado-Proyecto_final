@@ -35,7 +35,9 @@ public class Simulador {
             opcion = sc.nextInt();
         }
 
-        switch(opcion) {
+        switch(op
+        
+        cion) {
             case 1:
                 s.opcionUno();
                 break;

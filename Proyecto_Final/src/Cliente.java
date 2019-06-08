@@ -35,19 +35,15 @@ public class Cliente{
      * @return el carrito con los productos comprados.
     */
     public LinkedList<Producto> llenaCarrito(){
-        int productosAComprar;
-        if(random.nextDouble() < probaMasDeVeinte){
+        int productosAComprar = 3;
+        /* if(random.nextDouble() < probaMasDeVeinte){
             productosAComprar = random.nextInt(181) + 20;
         }else{
             productosAComprar = random.nextInt(21);
-        }
-        numeroArticulos = productosAComprar;
-        while(productosAComprar != 0){
-            if (productosAComprar < 0) {
-                break;
-            }
+        } */
+        numeroArticulos = random.nextInt(181) + 20;
+        while(productosAComprar > 0){
             int cantProd = random.nextInt(productosAComprar) + 1;
-            Simulador.sop(String.valueOf(cantProd));
             int prod = random.nextInt(miSuper.getAlmacen().length);
             productosAComprar -= meteAlCarrito(prod, cantProd);
             int bandera = meteAlCarrito(prod, cantProd);
@@ -73,7 +69,6 @@ public class Cliente{
             Producto p = new Producto(miSuper.retiraAlmacen(prod, cantProd),
                 cantProd);
             carrito.add(p);
-            Simulador.sop("almacen:\n" + miSuper.getAlmacen().toString());
             return p.getCantidad();
         }catch(YaSeAcaboJovenException e){
             return 0;
