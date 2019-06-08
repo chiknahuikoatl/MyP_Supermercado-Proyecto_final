@@ -190,7 +190,7 @@ public class Supermercado{
             for (int i = 0; i < numeroPersonas; i++) {
                 Cliente c = new Cliente(this, probaMasDeVeinte);
                 formaEnCaja(c);
-                //Thread.sleep(timpo);
+                Thread.sleep(timpo);
             }
             Thread.sleep(1000);
             abierto = false;
@@ -223,12 +223,20 @@ public class Supermercado{
         try {
             fos = new FileOutputStream(file);
             PrintStream writer = new PrintStream(fos);
-            ListIterator<String> it = tickets.listIterator();
+            int i = 0;
+            for (String s : this.tickets) {
+                if (s != null) {
+                    writer.println(s);
+                    i++;
+                } else {
+                    //Simulador.sop("palabra numero" + i);
+                }
+            }
+            /* ListIterator<String> it = tickets.listIterator();
             while (it.hasNext()) {
                     String s = String.valueOf(it.next());
-                    writer.println(s);
             }
-            //writer.println(this.ticketsDia);
+            //writer.println(this.ticketsDia); */
             writer.println("total de compras:" + totalCompras);
             writer.close();
             System.exit(1);

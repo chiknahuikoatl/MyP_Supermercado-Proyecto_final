@@ -69,6 +69,7 @@ public class Caja extends Thread {
             int detener = rd.nextInt(100);
             if (detener == this.detener) {
                 //Detencion de cobro de caja
+                //Simulador.sop("detencion de caja");
                 try {
                     Thread.sleep(75);
                 } catch (InterruptedException e) {
@@ -97,7 +98,7 @@ public class Caja extends Thread {
             ticket += "----------------------------------------------\n";
             ticket += "¡GRACIAS POR SU COMPRA, VUELVE PRONTO!\n";
             ticket += "----------------------------------------------\n";
-            //ticketsDia = ticketsDia + ticket +"\n";
+            Simulador.sop("" + ticket);
             miSuper.tickets.add(ticket);
             this.totalCompras++;
             this.cliente++;
