@@ -1,5 +1,5 @@
-coca	20	15
-leche	20	15
-pan	20	20
-galletas	20	22
-agua	20	12
+coca	20000	15
+leche	20000	15
+pan	20000	20
+galletas	20000	22
+agua	20000	12
